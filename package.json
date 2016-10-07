@@ -5,11 +5,12 @@
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node app.js"
+    "start": "gulp serve"
   },
   "author": "Marques Robinson (zoso7728)",
   "license": "ISC",
   "dependencies": {
+    "ejs": "^2.5.2",
     "express": "^4.14.0"
   },
   "devDependencies": {

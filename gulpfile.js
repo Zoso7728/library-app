@@ -10,16 +10,18 @@ gulp.task('style', function() {
     .pipe($.jshint.reporter('jshint-stylish', {
       verbose: true
     }))
-    .pipe($.jscs());
+    .pipe($.jscs())
+  ;
 });
 
 gulp.task('inject', function() {
   var wiredep = require('wiredep').stream;
 
-  return gulp.src('./src/views/*.html')
+  return gulp.src('./src/views/*.pug')
     .pipe(wiredep(config.wiredepOptions))
     .pipe($.inject(gulp.src(config.injectSrc, {read: false}), config.injectOptions))
-    .pipe(gulp.dest('./src/views'));
+    .pipe(gulp.dest('./src/views'))
+  ;
 });
 
 gulp.task('serve', ['style', 'inject'], function() {
