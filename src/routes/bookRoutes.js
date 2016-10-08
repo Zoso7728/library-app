@@ -1,51 +1,41 @@
 var express = require('express');
+var mongodb = require('mongodb').MongoClient;
+var ObjectId = require('mongodb').ObjectId;
 
 var bookRouter = express.Router();
 
 var router = function(nav) {
-  var books = [
-    {
-      title: 'The Name of The Wind',
-      genre: 'Fantasy',
-      author: 'Patrick Rothfuss',
-      read: true
-    },
-    {
-      title: 'The Wise Mans Fear',
-      genre: 'Fantasy',
-      author: 'Patrick Rothfuss',
-      read: false
-    },
-    {
-      title: 'The Lost Symbol',
-      genre: 'Historical Fiction',
-      author: 'Dan Brown',
-      read: false
-    },
-    {
-      title: 'Angels and Demons',
-      genre: 'Historical Fiction',
-      author: 'Dan Brown',
-      read: true
-    },
-    {
-      title: 'Inferno',
-      genre: 'Historical Fiction',
-      author: 'Dan Brown',
-      read: false
-    },
-  ];
+  var url = 'mongodb://localhost:27017/libraryApp';
+
+  bookRouter.use(function(req, res, next) {
+    if (!req.user) {
+      res.redirect('/');
+    }
+
+    next();
+  })
 
   bookRouter.route('/')
     .get(function(req, res) {
-      res.render('book/booksList', {nav: nav, books: books});
+      mongodb.connect(url, function(err, db) {
+        var collection = db.collection('books');
+        var books = collection.find({}).toArray(function(err, results) {
+          res.render('book/booksList', {nav: nav, books: results});
+        });
+      });
     })
   ;
 
   bookRouter.route('/:id')
     .get(function(req, res) {
-      var id = req.params.id;
-      res.render('book/book', {nav: nav, book: books[id]});
+      var id = new ObjectId(req.params.id);
+
+      mongodb.connect(url, function(err, db) {
+        var collection = db.collection('books');
+        collection.findOne({_id: id}, function(err, results) {
+          res.render('book/book', {nav: nav, book: results});
+        });
+      });
     })
   ;
 
