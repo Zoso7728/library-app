@@ -7,12 +7,14 @@ var books = [
     title: 'The Name of The Wind',
     genre: 'Fantasy',
     author: 'Patrick Rothfuss',
+    bookId: 186074,
     read: true
   },
   {
     title: 'The Wise Mans Fear',
     genre: 'Fantasy',
     author: 'Patrick Rothfuss',
+    bookId: 1215032,
     read: false
   },
   {
