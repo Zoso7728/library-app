@@ -4,9 +4,9 @@ var url = 'mongodb://localhost:27017/libraryApp';
 
 var bookController = function(bookService, nav) {
   var middleware = function(req, res, next) {
-    // if (!req.user) {
-      // res.redirect('/');
-    // }
+    if (!req.user) {
+      res.redirect('/auth/login');
+    }
 
     next();
   };

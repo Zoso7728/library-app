@@ -13,8 +13,8 @@ var nav = [
     text: 'Books'
   },
   {
-    link: '/authors',
-    text: 'Authors'
+    link: '/auth/logout',
+    text: 'Logout'
   }
 ];
 var bookRouter = require('./src/routes/bookRoutes')(nav);
@@ -39,7 +39,11 @@ app.use('/admin', adminRouter);
 app.use('/auth', authRouter);
 
 app.get('/', function(req, res) {
-  res.render('index', {nav: nav});
+  if (!req.user) {
+    res.redirect('/auth/login');
+  }
+
+  res.redirect('/books');
 });
 
 app.listen(port, function(err) {

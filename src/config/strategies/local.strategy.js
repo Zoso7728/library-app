@@ -20,11 +20,11 @@ module.exports = function() {
       collection.findOne({
         username: username
       }, function(err, results) {
-        if (results.password === password) {
+        if (!results) {
+          done(null, false, {message: 'Bad password'});
+        } else if (results.password === password) {
           var user = results;
           done(null, user);
-        } else {
-          done(null, false, {message: 'Bad password'});
         }
       });
     });

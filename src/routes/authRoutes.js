@@ -19,7 +19,7 @@ var router = function() {
 
         collection.insert(user, function(err, results) {
           req.login(results.ops[0], function() {
-            res.redirect('/auth/profile');
+            res.redirect('/books');
           });
         });
       });
@@ -28,16 +28,29 @@ var router = function() {
 
   authRouter.route('/signIn')
     .post(passport.authenticate('local', {
-      failureRedirect: '/'
+      failureRedirect: '/auth/login'
     }), function(req, res) {
-      res.redirect('/auth/profile');
+      res.redirect('/books');
+    })
+  ;
+
+  authRouter.route('/login')
+    .get(function(req, res) {
+      res.render('login/login');
+    })
+  ;
+
+  authRouter.route('/logout')
+    .get(function(req, res) {
+      req.logout();
+      res.redirect('/auth/login');
     })
   ;
 
   authRouter.route('/profile')
     .all(function(req, res, next) {
       if (!req.user) {
-        res.redirect('/');
+        res.redirect('/auth/login');
       }
 
       next();
